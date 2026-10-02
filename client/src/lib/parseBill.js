@@ -27,10 +27,30 @@ function findAmount(text, patterns) {
 export function parseBillText(rawText) {
   const text = stripCommas(rawText || "");
 
+  // Bihar (NBPDCL/SBPDCL) style bills look like this:
+  //   Bill Due Dt | Amt befr Due Dt (With Rebate) | Amt after Due Dt (Without Rebate)
+  //   01/08/2024  | 11196.00                      | 11298.00
+  //   ...
+  //   Total Amt Payable at a time within 01/08/2024 : 33234.00
+  // The first column is the monthly amount with rebate, which is what the
+  // savings plan needs. "Total Unit" on these bills covers the whole
+  // multi-month reading period, so units are left blank on purpose: the
+  // engine estimates the rate instead of mixing a monthly bill with
+  // multi-month units.
+  const nbpdcl = /AMT\s*(?:BEFR|BEFORE|BEF|BFR)\s*DUE\s*D[TA]/i.test(text);
+  if (nbpdcl) {
+    const netBill = findAmount(text, [
+      /AMT\s*(?:BEFR|BEFORE|BEF|BFR)\s*DUE\s*D[TA][\s\S]*?(\d{3,}\.\d{1,2})/i,
+      /TOTAL\s*AMT\s*PAYABLE[\s\S]*?(\d{3,}\.\d{1,2})/i,
+    ]);
+    return { netBill, energyCharge: null, fixedCharges: null, unitsKwh: null };
+  }
+
   const netBill = findAmount(text, [
     /NET\s*BILL[^\d]*?(\d+\.\d{1,2})/i,
     /NET\s*AMOUNT[^\d]*?(\d+\.\d{1,2})/i,
     /BILL\s*AFT\s*SUB[^\d]*?(\d+\.\d{1,2})/i,
+    /TOTAL\s*AMT\s*PAYABLE[^\d]*?(\d+\.\d{1,2})/i,
   ]);
 
   const energyCharge = findAmount(text, [
@@ -52,6 +72,7 @@ export function parseBillText(rawText) {
   const fixedCharges = fixedParts.length ? Math.round(fixedParts.reduce((a, b) => a + b, 0) * 100) / 100 : null;
 
   const unitsKwh = findAmount(text, [
+    /TOTAL\s*UNIT[^\d]*?(\d+\.?\d*)/i,
     /UNITS?\s*(?:CONSUMED)?[^\d]*?(\d+\.?\d*)/i,
     /KWH[^\d]*?(\d+\.?\d*)/i,
   ]);
