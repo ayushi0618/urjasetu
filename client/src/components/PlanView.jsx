@@ -97,6 +97,8 @@ export default function PlanView({ lang, data, onNew }) {
         </div>
       </div>
 
+      {/* Breakdown + tips side by side on desktop */}
+      <div className="grid items-start gap-5 lg:grid-cols-2">
       {/* Breakdown */}
       <div className="rise rounded-[1.75rem] border border-stone-200/80 bg-white p-5 shadow-card sm:p-6" style={{ "--d": 1 }}>
         <h3 className="font-display text-lg font-extrabold tracking-tight text-stone-800">
@@ -152,6 +154,7 @@ export default function PlanView({ lang, data, onNew }) {
           ))}
         </ul>
       </div>
+      </div>
 
       {/* Checklist */}
       <div className="rise rounded-[1.75rem] border border-stone-200/80 bg-white p-5 shadow-card sm:p-6" style={{ "--d": 3 }}>
@@ -163,6 +166,7 @@ export default function PlanView({ lang, data, onNew }) {
             {doneChecks}/{totalChecks}
           </span>
         </div>
+        <div className="grid items-start gap-x-8 lg:grid-cols-2">
         {weeks.map((w) => {
           const items = plan.checklist.filter((c) => c.week === w);
           const done = items.filter((c) => checks[c.key]).length;
@@ -210,10 +214,13 @@ export default function PlanView({ lang, data, onNew }) {
             </div>
           );
         })}
+        </div>
       </div>
 
+      {/* CO2 + assumptions side by side on desktop */}
+      <div className="grid items-start gap-5 lg:grid-cols-2">
       {/* CO2 */}
-      <div className="rise relative overflow-hidden rounded-[1.75rem] bg-gradient-to-br from-sky-900 to-teal-800 p-6 text-white shadow-card" style={{ "--d": 4 }}>
+      <div className="rise relative h-full overflow-hidden rounded-[1.75rem] bg-gradient-to-br from-sky-900 to-teal-800 p-6 text-white shadow-card" style={{ "--d": 4 }}>
         <div className="dot-grid pointer-events-none absolute inset-0 opacity-40" />
         <div className="relative flex items-center gap-4">
           <span className="animate-float text-5xl">🌍</span>
@@ -227,7 +234,7 @@ export default function PlanView({ lang, data, onNew }) {
       </div>
 
       {/* Assumptions */}
-      <div className="rise rounded-[1.75rem] border border-amber-200/70 bg-amber-50 p-5 sm:p-6" style={{ "--d": 5 }}>
+      <div className="rise h-full rounded-[1.75rem] border border-amber-200/70 bg-amber-50 p-5 sm:p-6" style={{ "--d": 5 }}>
         <h3 className="font-bold text-amber-900">🔍 {t("assumptions_title", lang)}</h3>
         <ul className="mt-2.5 space-y-1.5 text-sm leading-relaxed text-amber-900/80">
           {plan.assumptions.map((a, i) => (
@@ -237,6 +244,7 @@ export default function PlanView({ lang, data, onNew }) {
             </li>
           ))}
         </ul>
+      </div>
       </div>
 
       <button
