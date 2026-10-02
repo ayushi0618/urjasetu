@@ -22,50 +22,86 @@ export default function Dashboard({ lang, onOpen }) {
     })();
   }, []);
 
-  if (error) return <p className="rounded-2xl bg-red-50 p-4 text-red-700">{t("err_analyze", lang)}</p>;
-  if (!stats) return <p className="p-4">{t("loading", lang)}</p>;
+  if (error)
+    return (
+      <div className="flex items-start gap-3 rounded-[1.75rem] border border-red-200 bg-red-50 p-5">
+        <span className="text-xl">😕</span>
+        <p className="font-bold text-red-800">{t("err_analyze", lang)}</p>
+      </div>
+    );
+  if (!stats)
+    return (
+      <div className="space-y-3">
+        {[0, 1, 2].map((i) => (
+          <div key={i} className="bar-shimmer h-24 rounded-[1.75rem] opacity-20" style={{ animationDelay: `${i * 0.2}s` }} />
+        ))}
+      </div>
+    );
 
   const cards = [
-    { label: t("stat_bills", lang), value: stats.billsAnalyzed },
-    { label: t("stat_save_year", lang), value: "Rs. " + stats.yearlySavingsRs.toLocaleString("en-IN") },
-    { label: t("stat_co2", lang), value: stats.co2YearlyKg + " kg" },
-    { label: t("stat_check", lang), value: stats.checklistPct + "%" },
+    { label: t("stat_bills", lang), value: stats.billsAnalyzed, icon: "🧾", tint: "from-leaf/15 to-leaf/5", accent: "text-leafdark" },
+    { label: t("stat_save_year", lang), value: "Rs. " + stats.yearlySavingsRs.toLocaleString("en-IN"), icon: "💰", tint: "from-amberwarm/15 to-amberwarm/5", accent: "text-amberwarm" },
+    { label: t("stat_co2", lang), value: stats.co2YearlyKg + " kg", icon: "🌍", tint: "from-teal-600/15 to-teal-600/5", accent: "text-teal-700" },
+    { label: t("stat_check", lang), value: stats.checklistPct + "%", icon: "✅", tint: "from-sky-600/15 to-sky-600/5", accent: "text-sky-700" },
   ];
 
   return (
     <div className="space-y-5">
-      <div>
-        <h2 className="text-2xl font-bold">{t("dash_title", lang)}</h2>
-        <p className="text-stone-500">{t("dash_sub", lang)}</p>
+      <div className="rise" style={{ "--d": 0 }}>
+        <h2 className="font-display text-2xl font-extrabold tracking-tight text-stone-900">
+          {t("dash_title", lang)}
+        </h2>
+        <p className="mt-0.5 text-stone-500">{t("dash_sub", lang)}</p>
       </div>
 
       <div className="grid grid-cols-2 gap-3">
-        {cards.map((c) => (
-          <div key={c.label} className="rounded-3xl bg-white p-5 border border-stone-200">
-            <p className="stat-number text-2xl font-bold text-leafdark">{c.value}</p>
-            <p className="mt-1 text-sm text-stone-500">{c.label}</p>
+        {cards.map((c, i) => (
+          <div
+            key={c.label}
+            className={`rise rounded-[1.75rem] border border-stone-200/80 bg-gradient-to-br ${c.tint} bg-white p-5 shadow-card`}
+            style={{ "--d": i + 1 }}
+          >
+            <span className="text-2xl">{c.icon}</span>
+            <p className={`stat-number mt-2 text-[1.35rem] font-extrabold tracking-tight ${c.accent}`}>{c.value}</p>
+            <p className="mt-1 text-[13px] font-medium leading-snug text-stone-500">{c.label}</p>
           </div>
         ))}
       </div>
 
-      <div className="rounded-3xl bg-white p-5 border border-stone-200">
-        <h3 className="font-bold text-lg">{t("past_title", lang)}</h3>
-        {plans.length === 0 && <p className="mt-2 text-stone-500">{t("empty", lang)}</p>}
-        <div className="mt-3 space-y-2">
+      <div className="rise rounded-[1.75rem] border border-stone-200/80 bg-white p-5 shadow-card sm:p-6" style={{ "--d": 5 }}>
+        <h3 className="font-display text-lg font-extrabold tracking-tight text-stone-800">
+          🕘 {t("past_title", lang)}
+        </h3>
+        {plans.length === 0 && (
+          <div className="mt-4 rounded-2xl bg-stone-50 p-6 text-center">
+            <p className="text-3xl">📭</p>
+            <p className="mt-2 text-sm font-medium text-stone-500">{t("empty", lang)}</p>
+          </div>
+        )}
+        <div className="mt-4 space-y-2.5">
           {plans.map((p) => (
-            <div key={p.id} className="flex items-center justify-between rounded-2xl bg-stone-50 px-4 py-3">
-              <div>
-                <p className="font-semibold stat-number">Rs. {p.netBill}</p>
-                <p className="text-xs text-stone-500">
-                  {new Date(p.createdAt).toLocaleDateString("en-IN")} · Rs. {p.wasteMonthlyRs}
-                  {t("per_month", lang)}
-                </p>
+            <div
+              key={p.id}
+              className="flex items-center justify-between gap-3 rounded-2xl border border-transparent bg-stone-50/80 px-4 py-3.5 transition-all hover:border-stone-200 hover:bg-white hover:shadow-card"
+            >
+              <div className="flex items-center gap-3">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-leaf/10 text-lg">
+                  🧾
+                </span>
+                <div>
+                  <p className="stat-number font-extrabold text-stone-800">Rs. {p.netBill}</p>
+                  <p className="text-xs font-medium text-stone-500">
+                    {new Date(p.createdAt).toLocaleDateString("en-IN")} ·{" "}
+                    <span className="font-bold text-leafdark">Rs. {p.wasteMonthlyRs}</span>
+                    {t("per_month", lang)}
+                  </p>
+                </div>
               </div>
               <button
                 onClick={() => onOpen(p.id)}
-                className="rounded-full bg-leaf px-4 py-2 text-sm font-semibold text-white"
+                className="shrink-0 rounded-full bg-leafdeep px-5 py-2.5 text-sm font-bold text-white shadow-card transition-transform hover:scale-105 active:scale-95"
               >
-                {t("view", lang)}
+                {t("view", lang)} →
               </button>
             </div>
           ))}
