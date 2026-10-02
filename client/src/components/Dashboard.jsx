@@ -54,7 +54,7 @@ export default function Dashboard({ lang, onOpen }) {
         <p className="mt-0.5 text-stone-500">{t("dash_sub", lang)}</p>
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         {cards.map((c, i) => (
           <div
             key={c.label}
@@ -78,7 +78,7 @@ export default function Dashboard({ lang, onOpen }) {
             <p className="mt-2 text-sm font-medium text-stone-500">{t("empty", lang)}</p>
           </div>
         )}
-        <div className="mt-4 space-y-2.5">
+        <div className="mt-4 grid gap-2.5 lg:grid-cols-2">
           {plans.map((p) => (
             <div
               key={p.id}
