@@ -78,23 +78,6 @@ urjasetu/
     db.js                    # MongoDB-or-JSON storage
 ```
 
-## The 90-second demo script (for judges)
-
-**0:00 - 0:10 — The idea in one line.**
-"This is UrjaSetu. You photograph your electricity bill, and it tells you where your money is going and what to do about it, in rupees."
-
-**0:10 - 0:25 — One click.**
-Click **"Try the 90-second demo"**. "This uses a real bill from a home in Ghaziabad: Rs. 671."
-
-**0:25 - 0:50 — The plan.**
-"Out of Rs. 671, Rs. 507 is the actual energy charge. We estimate about Rs. 100 a month is avoidable waste." Scroll the breakdown bars: fans, lights, fridge, AC, standby, off-peak. "Every number shows its assumption. Nothing is hidden."
-
-**0:50 - 1:10 — The checklist.**
-Open the 4-week checklist. Tick one item. "It saves to the backend, and the dashboard counts it." Switch the language to Hindi or Hinglish: "The whole app, including the checklist, speaks three languages."
-
-**1:10 - 1:30 — The dashboard.**
-Open the dashboard. "Rs. 1,217 estimated yearly savings from one bill, CO2 avoided, checklist progress. Now imagine this for a million homes."
-
 ## Notes for the team
 
 - The rupee figures are estimates from documented household assumptions (see `server/engine.js` and the assumptions box in the app). Say that out loud if a judge asks. Honest numbers beat big numbers.
