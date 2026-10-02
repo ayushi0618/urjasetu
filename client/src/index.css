@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,11 +8,38 @@
 body {
   background-color: #fffbf3;
   color: #292019;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: #2f7d4f;
+  color: #fff;
 }
 
 /* Big readable numbers for the savings figures. */
 .stat-number {
   font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+/* Staggered entrance for stacked cards: style="--d:1" ... "--d:5" */
+.rise {
+  animation: fade-up 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--d, 0) * 90ms);
+}
+
+/* Decorative dotted pattern used on the hero card. */
+.dot-grid {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.16) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
+}
+
+/* Shimmering progress bar while the bill is being read. */
+.bar-shimmer {
+  background: linear-gradient(90deg, #2f7d4f 25%, #63b581 50%, #2f7d4f 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s linear infinite;
 }
 
 /* Make checkboxes and buttons easy to tap on phones. */
@@ -18,4 +47,39 @@ input[type="checkbox"] {
   width: 1.4rem;
   height: 1.4rem;
   accent-color: #2f7d4f;
+  cursor: pointer;
+}
+
+/* Number inputs: hide the fiddly spinners, keep the big tap target. */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+/* Focus visibility that matches the theme. */
+.focus-leaf:focus {
+  outline: none;
+  border-color: #2f7d4f;
+  box-shadow: 0 0 0 3px rgba(47, 125, 79, 0.16);
+}
+
+/* Thin styled scrollbar for the page. */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #fffbf3;
+}
+::-webkit-scrollbar-thumb {
+  background: #d8cfbc;
+  border-radius: 8px;
+  border: 2px solid #fffbf3;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2f7d4f;
 }
