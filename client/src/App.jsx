@@ -12,6 +12,12 @@ import Dashboard from "./components/Dashboard.jsx";
 const DEMO_BILL = { netBill: 671, energyCharge: 507, fixedCharges: 164, unitsKwh: "" };
 const DEMO_HOME = { fans: 4, fansOld: true, acCount: 1, fridgeOld: false, bulbs: 5 };
 
+const STEPS = [
+  { icon: "📸", title: "step1_title", desc: "step1_desc" },
+  { icon: "🔍", title: "step2_title", desc: "step2_desc" },
+  { icon: "🌱", title: "step3_title", desc: "step3_desc" },
+];
+
 export default function App() {
   const [lang, setLang] = useState(() => localStorage.getItem("urjasetu-lang") || "en");
   const [screen, setScreen] = useState("home"); // home | plan | dashboard
@@ -56,74 +62,120 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-cream">
-      <header className="mx-auto flex max-w-2xl items-center justify-between px-4 py-4">
-        <button onClick={() => setScreen("home")} className="text-left">
-          <span className="text-2xl font-bold text-leafdark">⚡ UrjaSetu</span>
-          <span className="block text-xs text-stone-500">{t("tagline", lang)}</span>
-        </button>
-        <LanguageToggle lang={lang} setLang={changeLang} />
+    <div className="min-h-screen bg-cream font-sans">
+      {/* Sticky glass header */}
+      <header className="sticky top-0 z-20 border-b border-stone-200/70 bg-cream/85 backdrop-blur-md">
+        <div className="mx-auto flex max-w-2xl items-center justify-between px-4 py-3">
+          <button onClick={() => setScreen("home")} className="flex items-center gap-2.5 text-left">
+            <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-leaf to-leafdeep text-xl text-white shadow-card">
+              ⚡
+            </span>
+            <span>
+              <span className="block text-xl font-extrabold tracking-tight text-leafdeep">UrjaSetu</span>
+              <span className="block text-[11px] font-medium text-stone-500">{t("tagline", lang)}</span>
+            </span>
+          </button>
+          <LanguageToggle lang={lang} setLang={changeLang} />
+        </div>
+        <nav className="mx-auto flex max-w-2xl gap-2 px-4 pb-3">
+          {[
+            { id: "home", label: t("nav_home", lang), icon: "🏠" },
+            { id: "dashboard", label: t("nav_dashboard", lang), icon: "📊" },
+          ].map((n) => (
+            <button
+              key={n.id}
+              onClick={() => setScreen(n.id)}
+              className={
+                "flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition-all " +
+                (screen === n.id || (n.id === "home" && screen === "plan")
+                  ? "bg-leafdeep text-white shadow-card"
+                  : "bg-white text-stone-600 border border-stone-200 hover:border-leaf/50 hover:text-leafdeep")
+              }
+            >
+              <span>{n.icon}</span> {n.label}
+            </button>
+          ))}
+        </nav>
       </header>
 
-      <nav className="mx-auto flex max-w-2xl gap-2 px-4 pb-2">
-        {[
-          { id: "home", label: t("nav_home", lang) },
-          { id: "dashboard", label: t("nav_dashboard", lang) },
-        ].map((n) => (
-          <button
-            key={n.id}
-            onClick={() => setScreen(n.id)}
-            className={
-              "rounded-full px-4 py-2 text-sm font-semibold " +
-              (screen === n.id || (n.id === "home" && screen === "plan")
-                ? "bg-leafdark text-white"
-                : "bg-white text-stone-600 border border-stone-200")
-            }
-          >
-            {n.label}
-          </button>
-        ))}
-      </nav>
-
-      <main className="mx-auto max-w-2xl px-4 pb-16 pt-2">
+      <main className="mx-auto max-w-2xl px-4 pb-16 pt-5">
         {screen === "home" && (
           <div className="space-y-5">
-            <div className="rounded-3xl bg-leafdark p-6 text-white sm:p-8">
-              <h1 className="text-2xl font-bold leading-snug sm:text-3xl">{t("hero_title", lang)}</h1>
-              <p className="mt-3 text-white/80 leading-relaxed">{t("hero_sub", lang)}</p>
-              <button
-                onClick={() => analyze(DEMO_BILL, DEMO_HOME)}
-                disabled={busy}
-                className="mt-5 rounded-2xl bg-amberwarm px-6 py-3.5 text-lg font-semibold text-white disabled:opacity-50"
-              >
-                {busy ? t("loading", lang) : t("btn_demo", lang)}
-              </button>
-              <p className="mt-2 text-xs text-white/60">{t("demo_note", lang)}</p>
-            </div>
-
-            <div className="flex gap-2">
-              {[
-                { id: "upload", label: t("tab_upload", lang) },
-                { id: "manual", label: t("tab_manual", lang) },
-              ].map((tb) => (
+            {/* Hero */}
+            <div className="rise relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-leafdeep via-leafdark to-leaf p-6 text-white shadow-lift sm:p-8" style={{ "--d": 0 }}>
+              <div className="dot-grid pointer-events-none absolute inset-0 opacity-60" />
+              <div className="pointer-events-none absolute -right-10 -top-10 h-44 w-44 rounded-full bg-amberglow/25 blur-2xl" />
+              <div className="pointer-events-none absolute -bottom-14 -left-8 h-40 w-40 rounded-full bg-white/10 blur-2xl" />
+              <div className="relative">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold tracking-wide">
+                  <span className="h-1.5 w-1.5 rounded-full bg-amberglow animate-pulse-soft" />
+                  {t("tagline", lang)}
+                </span>
+                <h1 className="mt-3 font-display text-[1.65rem] font-extrabold leading-tight tracking-tight sm:text-3xl">
+                  {t("hero_title", lang)}
+                </h1>
+                <p className="mt-3 max-w-md text-[15px] leading-relaxed text-white/80">{t("hero_sub", lang)}</p>
                 <button
-                  key={tb.id}
-                  onClick={() => setTab(tb.id)}
-                  className={
-                    "flex-1 rounded-2xl px-4 py-3 font-semibold " +
-                    (tab === tb.id ? "bg-white shadow border border-stone-200" : "text-stone-500")
-                  }
+                  onClick={() => analyze(DEMO_BILL, DEMO_HOME)}
+                  disabled={busy}
+                  className="mt-5 inline-flex items-center gap-2 rounded-2xl bg-gradient-to-b from-amberglow to-amberwarm px-6 py-3.5 text-base font-bold text-white shadow-lift transition-transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50"
                 >
-                  {tb.label}
+                  {busy ? t("loading", lang) : <>▶ {t("btn_demo", lang)}</>}
                 </button>
-              ))}
+                <p className="mt-2.5 text-xs text-white/60">{t("demo_note", lang)}</p>
+              </div>
             </div>
 
-            {tab === "upload" ? (
-              <UploadBill lang={lang} onAnalyze={analyze} busy={busy} error={error} />
-            ) : (
-              <ManualEntry lang={lang} onAnalyze={analyze} busy={busy} error={error} />
-            )}
+            {/* How it works */}
+            <div className="rise rounded-[1.75rem] border border-stone-200/80 bg-white p-5 shadow-card sm:p-6" style={{ "--d": 1 }}>
+              <h2 className="text-sm font-bold uppercase tracking-widest text-stone-400">{t("how_title", lang)}</h2>
+              <div className="mt-4 grid grid-cols-3 gap-3">
+                {STEPS.map((s, i) => (
+                  <div key={s.title} className="relative text-center">
+                    {i < 2 && (
+                      <span className="absolute right-[-14px] top-6 hidden text-stone-300 sm:block">→</span>
+                    )}
+                    <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-leaf/15 to-amberwarm/15 text-2xl">
+                      {s.icon}
+                    </div>
+                    <p className="mt-2 text-[13px] font-bold text-stone-800">{t(s.title, lang)}</p>
+                    <p className="mt-1 hidden text-xs leading-relaxed text-stone-500 sm:block">{t(s.desc, lang)}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Input tabs */}
+            <div className="rise" style={{ "--d": 2 }}>
+              <div className="flex gap-1 rounded-2xl border border-stone-200/80 bg-white p-1.5 shadow-card">
+                {[
+                  { id: "upload", label: t("tab_upload", lang), icon: "📸" },
+                  { id: "manual", label: t("tab_manual", lang), icon: "✍️" },
+                ].map((tb) => (
+                  <button
+                    key={tb.id}
+                    data-tab={tb.id}
+                    onClick={() => setTab(tb.id)}
+                    className={
+                      "flex flex-1 items-center justify-center gap-2 rounded-xl px-4 py-3 text-[15px] font-bold transition-all " +
+                      (tab === tb.id
+                        ? "bg-leafdeep text-white shadow-card"
+                        : "text-stone-500 hover:text-stone-700")
+                    }
+                  >
+                    <span>{tb.icon}</span> {tb.label}
+                  </button>
+                ))}
+              </div>
+
+              <div key={tab} className="animate-fade-in pt-4">
+                {tab === "upload" ? (
+                  <UploadBill lang={lang} onAnalyze={analyze} busy={busy} error={error} />
+                ) : (
+                  <ManualEntry lang={lang} onAnalyze={analyze} busy={busy} error={error} />
+                )}
+              </div>
+            </div>
           </div>
         )}
 
@@ -134,8 +186,9 @@ export default function App() {
         {screen === "dashboard" && <Dashboard lang={lang} onOpen={openPlan} />}
       </main>
 
-      <footer className="border-t border-stone-200 py-6 text-center text-xs text-stone-400 px-4">
-        {t("footer", lang)}
+      <footer className="border-t border-stone-200/70 px-4 py-8 text-center">
+        <p className="text-sm font-semibold text-stone-500">⚡ UrjaSetu</p>
+        <p className="mt-1 text-xs text-stone-400">{t("footer", lang)}</p>
       </footer>
     </div>
   );
