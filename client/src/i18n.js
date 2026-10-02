@@ -42,6 +42,41 @@ const D = {
     hi: "गाज़ियाबाद के एक असली बिल पर आधारित: 671 रु.",
     hinglish: "Ghaziabad ke ek asli bill par based: Rs. 671.",
   },
+  how_title: {
+    en: "How it works",
+    hi: "यह कैसे काम करता है",
+    hinglish: "Ye kaise kaam karta hai",
+  },
+  step1_title: {
+    en: "Snap your bill",
+    hi: "बिल की फोटो लो",
+    hinglish: "Bill ki photo lo",
+  },
+  step1_desc: {
+    en: "A straight, well-lit photo works best.",
+    hi: "सीधी, साफ रोशनी वाली फोटो सबसे अच्छी रहती है।",
+    hinglish: "Seedhi, saaf roshni wali photo sabse achhi rehti hai.",
+  },
+  step2_title: {
+    en: "We read the numbers",
+    hi: "हम नंबर पढ़ते हैं",
+    hinglish: "Hum numbers padhte hain",
+  },
+  step2_desc: {
+    en: "The reader picks out your bill amount, units and charges.",
+    hi: "रीडर आपका बिल, यूनिट और चार्ज पढ़ लेता है।",
+    hinglish: "Reader aapka bill, units aur charges padh leta hai.",
+  },
+  step3_title: {
+    en: "Get your plan",
+    hi: "अपनी योजना पाओ",
+    hinglish: "Apna plan pao",
+  },
+  step3_desc: {
+    en: "Week-by-week tips to cut waste and save rupees.",
+    hi: "बर्बादी घटाने के हफ़्ते-दर-हफ़्ते टिप्स पाएं।",
+    hinglish: "Barbaadi ghatane ke week-by-week tips pao.",
+  },
   tab_upload: {
     en: "Upload bill photo",
     hi: "बिल की फोटो अपलोड करें",
