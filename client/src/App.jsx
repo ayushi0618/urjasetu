@@ -65,7 +65,7 @@ export default function App() {
     <div className="min-h-screen bg-cream font-sans">
       {/* Sticky glass header */}
       <header className="sticky top-0 z-20 border-b border-stone-200/70 bg-cream/85 backdrop-blur-md">
-        <div className="mx-auto flex max-w-2xl items-center justify-between px-4 py-3">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
           <button onClick={() => setScreen("home")} className="flex items-center gap-2.5 text-left">
             <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-leaf to-leafdeep text-xl text-white shadow-card">
               ⚡
@@ -77,7 +77,7 @@ export default function App() {
           </button>
           <LanguageToggle lang={lang} setLang={changeLang} />
         </div>
-        <nav className="mx-auto flex max-w-2xl gap-2 px-4 pb-3">
+        <nav className="mx-auto flex max-w-6xl gap-2 px-4 pb-3 sm:px-6">
           {[
             { id: "home", label: t("nav_home", lang), icon: "🏠" },
             { id: "dashboard", label: t("nav_dashboard", lang), icon: "📊" },
@@ -98,11 +98,11 @@ export default function App() {
         </nav>
       </header>
 
-      <main className="mx-auto max-w-2xl px-4 pb-16 pt-5">
+      <main className="mx-auto max-w-6xl px-4 pb-16 pt-5 sm:px-6">
         {screen === "home" && (
           <div className="space-y-5">
             {/* Hero */}
-            <div className="rise relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-leafdeep via-leafdark to-leaf p-6 text-white shadow-lift sm:p-8" style={{ "--d": 0 }}>
+            <div className="rise relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-leafdeep via-leafdark to-leaf p-6 text-white shadow-lift sm:p-8 lg:p-12" style={{ "--d": 0 }}>
               <div className="dot-grid pointer-events-none absolute inset-0 opacity-60" />
               <div className="pointer-events-none absolute -right-10 -top-10 h-44 w-44 rounded-full bg-amberglow/25 blur-2xl" />
               <div className="pointer-events-none absolute -bottom-14 -left-8 h-40 w-40 rounded-full bg-white/10 blur-2xl" />
@@ -126,27 +126,31 @@ export default function App() {
               </div>
             </div>
 
-            {/* How it works */}
-            <div className="rise rounded-[1.75rem] border border-stone-200/80 bg-white p-5 shadow-card sm:p-6" style={{ "--d": 1 }}>
-              <h2 className="text-sm font-bold uppercase tracking-widest text-stone-400">{t("how_title", lang)}</h2>
-              <div className="mt-4 grid grid-cols-3 gap-3">
-                {STEPS.map((s, i) => (
-                  <div key={s.title} className="relative text-center">
-                    {i < 2 && (
-                      <span className="absolute right-[-14px] top-6 hidden text-stone-300 sm:block">→</span>
-                    )}
-                    <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-leaf/15 to-amberwarm/15 text-2xl">
-                      {s.icon}
+            {/* Steps + input: side by side on desktop, stacked on phone */}
+            <div className="grid gap-5 lg:grid-cols-5">
+              {/* How it works */}
+              <div className="rise rounded-[1.75rem] border border-stone-200/80 bg-white p-5 shadow-card sm:p-6 lg:col-span-2" style={{ "--d": 1 }}>
+                <h2 className="text-sm font-bold uppercase tracking-widest text-stone-400">{t("how_title", lang)}</h2>
+                <div className="mt-4 grid grid-cols-3 gap-3 lg:grid-cols-1 lg:gap-5">
+                  {STEPS.map((s, i) => (
+                    <div key={s.title} className="relative text-center lg:flex lg:items-start lg:gap-4 lg:text-left">
+                      {i < 2 && (
+                        <span className="absolute right-[-14px] top-6 text-stone-300 lg:hidden">→</span>
+                      )}
+                      <div className="mx-auto flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-leaf/15 to-amberwarm/15 text-2xl lg:mx-0">
+                        {s.icon}
+                      </div>
+                      <div>
+                        <p className="mt-2 text-[13px] font-bold text-stone-800 lg:mt-0 lg:text-[15px]">{t(s.title, lang)}</p>
+                        <p className="mt-1 hidden text-xs leading-relaxed text-stone-500 sm:block lg:text-[13px]">{t(s.desc, lang)}</p>
+                      </div>
                     </div>
-                    <p className="mt-2 text-[13px] font-bold text-stone-800">{t(s.title, lang)}</p>
-                    <p className="mt-1 hidden text-xs leading-relaxed text-stone-500 sm:block">{t(s.desc, lang)}</p>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
 
-            {/* Input tabs */}
-            <div className="rise" style={{ "--d": 2 }}>
+              {/* Input tabs */}
+              <div className="rise lg:col-span-3" style={{ "--d": 2 }}>
               <div className="flex gap-1 rounded-2xl border border-stone-200/80 bg-white p-1.5 shadow-card">
                 {[
                   { id: "upload", label: t("tab_upload", lang), icon: "📸" },
@@ -174,6 +178,7 @@ export default function App() {
                 ) : (
                   <ManualEntry lang={lang} onAnalyze={analyze} busy={busy} error={error} />
                 )}
+              </div>
               </div>
             </div>
           </div>
