@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Warm paper background for the whole app. */
+body {
+  background-color: #fffbf3;
+  color: #292019;
+}
+
+/* Big readable numbers for the savings figures. */
+.stat-number {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Make checkboxes and buttons easy to tap on phones. */
+input[type="checkbox"] {
+  width: 1.4rem;
+  height: 1.4rem;
+  accent-color: #2f7d4f;
+}
